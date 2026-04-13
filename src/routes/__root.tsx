@@ -68,12 +68,12 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <>
+    <AuthProvider>
       <Header />
       <main>
         <Outlet />
       </main>
       <Footer />
-    </>
+    </AuthProvider>
   );
 }
