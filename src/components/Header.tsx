@@ -134,12 +134,21 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/login"
-              className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
-            >
-              Member Login
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/dashboard"
+                className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
+              >
+                Member Login
+              </Link>
+            )}
           </div>
         </div>
       )}
