@@ -16,6 +16,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [dark, setDark] = useState(false);
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
