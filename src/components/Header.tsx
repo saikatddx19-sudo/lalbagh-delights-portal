@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, LayoutDashboard } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -15,6 +16,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [dark, setDark] = useState(false);
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -71,12 +73,22 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/login"
-              className="ml-4 px-5 py-2.5 text-sm font-semibold rounded-lg gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105"
-            >
-              Member Login
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/dashboard"
+                className="ml-4 px-5 py-2.5 text-sm font-semibold rounded-lg gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 inline-flex items-center gap-2"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="ml-4 px-5 py-2.5 text-sm font-semibold rounded-lg gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105"
+              >
+                Member Login
+              </Link>
+            )}
             <button
               onClick={() => setDark(!dark)}
               className="ml-2 p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
@@ -122,12 +134,21 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/login"
-              className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
-            >
-              Member Login
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/dashboard"
+                className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="block mt-3 px-4 py-3 text-sm font-semibold text-center rounded-lg gradient-gold text-primary-foreground shadow-md"
+              >
+                Member Login
+              </Link>
+            )}
           </div>
         </div>
       )}

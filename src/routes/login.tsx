@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
+import { Eye, EyeOff, LogIn, UserPlus, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -17,6 +18,82 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loginMethod, setLoginMethod] = useState<"email" | "id">("id");
+
+  // Form fields
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [internationalId, setInternationalId] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const { signUp, signInWithEmail, signInWithInternationalId, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    navigate({ to: "/dashboard" });
+    return null;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        let result;
+        if (loginMethod === "id") {
+          if (!internationalId) {
+            setError("Please enter your International ID");
+            setLoading(false);
+            return;
+          }
+          result = await signInWithInternationalId(internationalId, password);
+        } else {
+          if (!email) {
+            setError("Please enter your email");
+            setLoading(false);
+            return;
+          }
+          result = await signInWithEmail(email, password);
+        }
+
+        if (result.error) {
+          setError(result.error.message);
+        } else {
+          navigate({ to: "/dashboard" });
+        }
+      } else {
+        if (!email || !password || !fullName) {
+          setError("Please fill in all required fields");
+          setLoading(false);
+          return;
+        }
+        const result = await signUp(email, password, {
+          full_name: fullName,
+          international_id: internationalId || undefined,
+          phone: phone || undefined,
+        });
+
+        if (result.error) {
+          setError(result.error.message);
+        } else {
+          setSuccess("Account created successfully! You are now signed in.");
+          setTimeout(() => navigate({ to: "/dashboard" }), 1500);
+        }
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="pt-20 min-h-screen flex items-center justify-center bg-muted/30 px-4 py-24">
@@ -38,62 +115,130 @@ function LoginPage() {
 
         {/* Form */}
         <div className="bg-card rounded-2xl border border-border shadow-lg p-8">
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="mb-4 p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-700 dark:text-green-400 text-sm">
+              {success}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Login method toggle */}
+            {isLogin && (
+              <div className="flex rounded-xl overflow-hidden border border-border">
+                <button
+                  type="button"
+                  onClick={() => setLoginMethod("id")}
+                  className={`flex-1 py-2.5 text-sm font-medium transition-colors ${
+                    loginMethod === "id"
+                      ? "gradient-gold text-primary-foreground"
+                      : "bg-background text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  International ID
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginMethod("email")}
+                  className={`flex-1 py-2.5 text-sm font-medium transition-colors ${
+                    loginMethod === "email"
+                      ? "gradient-gold text-primary-foreground"
+                      : "bg-background text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Email
+                </button>
+              </div>
+            )}
+
             {!isLogin && (
               <div>
-                <label htmlFor="fullname" className="block text-sm font-semibold text-foreground mb-2">Full Name</label>
+                <label htmlFor="fullname" className="block text-sm font-semibold text-foreground mb-2">
+                  Full Name <span className="text-destructive">*</span>
+                </label>
                 <input
                   id="fullname"
                   type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
                   placeholder="Your full name"
+                  required
+                />
+              </div>
+            )}
+
+            {/* International ID field */}
+            {(isLogin && loginMethod === "id") || !isLogin ? (
+              <div>
+                <label htmlFor="intlId" className="block text-sm font-semibold text-foreground mb-2">
+                  International ID{" "}
+                  {!isLogin && <span className="text-muted-foreground font-normal">(optional)</span>}
+                </label>
+                <input
+                  id="intlId"
+                  type="text"
+                  value={internationalId}
+                  onChange={(e) => setInternationalId(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+                  placeholder="Enter your International ID"
+                  required={isLogin && loginMethod === "id"}
+                />
+              </div>
+            ) : null}
+
+            {/* Email field */}
+            {(isLogin && loginMethod === "email") || !isLogin ? (
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
+                  Email {!isLogin && <span className="text-destructive">*</span>}
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+                  placeholder="you@example.com"
+                  required={!isLogin || loginMethod === "email"}
+                />
+              </div>
+            ) : null}
+
+            {!isLogin && (
+              <div>
+                <label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
+                  Phone <span className="text-muted-foreground font-normal">(optional)</span>
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+                  placeholder="+91 98765 43210"
                 />
               </div>
             )}
 
             <div>
-              <label htmlFor="intlId" className="block text-sm font-semibold text-foreground mb-2">
-                International ID {!isLogin && <span className="text-muted-foreground font-normal">(optional)</span>}
+              <label htmlFor="password" className="block text-sm font-semibold text-foreground mb-2">
+                Password {!isLogin && <span className="text-destructive">*</span>}
               </label>
-              <input
-                id="intlId"
-                type="text"
-                className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                placeholder="Enter your International ID"
-              />
-            </div>
-
-            {!isLogin && (
-              <>
-                <div>
-                  <label htmlFor="regEmail" className="block text-sm font-semibold text-foreground mb-2">Email</label>
-                  <input
-                    id="regEmail"
-                    type="email"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                    placeholder="you@example.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="regPhone" className="block text-sm font-semibold text-foreground mb-2">Phone</label>
-                  <input
-                    id="regPhone"
-                    type="tel"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                    placeholder="+91 98765 43210"
-                  />
-                </div>
-              </>
-            )}
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-foreground mb-2">Password</label>
               <div className="relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
                   placeholder="••••••••"
+                  required
+                  minLength={6}
                 />
                 <button
                   type="button"
@@ -107,16 +252,27 @@ function LoginPage() {
 
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 py-3.5 text-sm font-semibold rounded-xl gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-[1.02]"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 py-3.5 text-sm font-semibold rounded-xl gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100"
             >
-              {isLogin ? <LogIn className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />}
-              {isLogin ? "Sign In" : "Create Account"}
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : isLogin ? (
+                <LogIn className="h-4 w-4" />
+              ) : (
+                <UserPlus className="h-4 w-4" />
+              )}
+              {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+                setSuccess("");
+              }}
               className="text-sm text-primary hover:underline font-medium"
             >
               {isLogin ? "Don't have an account? Register" : "Already a member? Sign In"}
