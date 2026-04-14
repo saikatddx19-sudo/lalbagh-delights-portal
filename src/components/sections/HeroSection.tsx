@@ -1,17 +1,15 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight, Users, Calendar, Award } from "lucide-react";
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-hero">
-      {/* Decorative elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-primary blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32 text-center">
-        {/* Logo */}
         <div className="mb-8 animate-fade-in-up">
           <img
             src="/images/logo.jpeg"
@@ -20,14 +18,10 @@ export default function HeroSection() {
           />
         </div>
 
-        {/* Title */}
         <div className="animate-fade-in-up delay-100" style={{ opacity: 0 }}>
-          <p className="text-primary font-medium text-sm sm:text-base tracking-widest uppercase mb-4">
-            Welcome to
-          </p>
+          <p className="text-primary font-medium text-sm sm:text-base tracking-widest uppercase mb-4">Welcome to</p>
           <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-secondary-foreground mb-4 leading-tight">
-            Leo Club of
-            <br />
+            Leo Club of<br />
             <span className="text-gradient-gold">Lalbagh Delights</span>
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-secondary-foreground/70 max-w-2xl mx-auto leading-relaxed">
@@ -36,24 +30,15 @@ export default function HeroSection() {
           </p>
         </div>
 
-        {/* CTAs */}
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200" style={{ opacity: 0 }}>
-          <Link
-            to="/about"
-            className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl gradient-gold text-primary-foreground shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            Discover Our Story
-            <ArrowRight className="h-4 w-4" />
+          <Link to="/about" className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl gradient-gold text-primary-foreground shadow-lg hover:shadow-xl transition-all hover:scale-105">
+            Discover Our Story <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link
-            to="/events"
-            className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl border-2 border-primary/40 text-secondary-foreground hover:bg-primary/10 transition-all"
-          >
+          <Link to="/events" className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl border-2 border-primary/40 text-secondary-foreground hover:bg-primary/10 transition-all">
             Upcoming Events
           </Link>
         </div>
 
-        {/* Stats */}
         <div className="mt-20 grid grid-cols-3 gap-8 max-w-lg mx-auto animate-fade-in-up delay-300" style={{ opacity: 0 }}>
           {[
             { icon: Users, value: "50+", label: "Active Members" },
@@ -69,13 +54,9 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Bottom wave */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path
-            d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-            fill="var(--color-background)"
-          />
+          <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-background)" />
         </svg>
       </div>
     </section>

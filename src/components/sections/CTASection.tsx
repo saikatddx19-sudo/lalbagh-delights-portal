@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 export default function CTASection() {
@@ -16,17 +16,10 @@ export default function CTASection() {
           of young leaders dedicated to service and community impact.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl gradient-gold text-primary-foreground shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            Join Now
-            <ArrowRight className="h-4 w-4" />
+          <Link to="/login" className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl gradient-gold text-primary-foreground shadow-lg hover:shadow-xl transition-all hover:scale-105">
+            Join Now <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl border-2 border-primary/40 text-secondary-foreground hover:bg-primary/10 transition-all"
-          >
+          <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-xl border-2 border-primary/40 text-secondary-foreground hover:bg-primary/10 transition-all">
             Get in Touch
           </Link>
         </div>
