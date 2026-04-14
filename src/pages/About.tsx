@@ -1,17 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Users, Target, Globe, BookOpen, Award } from "lucide-react";
-
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About Us — Leo Club of Lalbagh Delights" },
-      { name: "description", content: "Learn about Leo Club of Lalbagh Delights, our mission, vision, and the impact we make." },
-      { property: "og:title", content: "About Us — Leo Club of Lalbagh Delights" },
-      { property: "og:description", content: "Learn about our mission, vision, and impact." },
-    ],
-  }),
-  component: AboutPage,
-});
 
 const pillars = [
   { icon: Heart, title: "Service", desc: "We believe in selfless service to our community, creating programs that uplift and support those in need." },
@@ -22,7 +9,7 @@ const pillars = [
   { icon: Award, title: "Recognition", desc: "Outstanding contributions are recognized through awards, certificates, and leadership opportunities." },
 ];
 
-function AboutPage() {
+export default function About() {
   return (
     <div className="pt-20">
       {/* Hero */}

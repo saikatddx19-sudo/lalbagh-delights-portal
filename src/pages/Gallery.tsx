@@ -1,18 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { X } from "lucide-react";
-
-export const Route = createFileRoute("/gallery")({
-  head: () => ({
-    meta: [
-      { title: "Gallery — Leo Club of Lalbagh Delights" },
-      { name: "description", content: "Browse photos and memories from Leo Club of Lalbagh Delights events and activities." },
-      { property: "og:title", content: "Gallery — Leo Club of Lalbagh Delights" },
-      { property: "og:description", content: "Browse photos from our events and activities." },
-    ],
-  }),
-  component: GalleryPage,
-});
 
 const categories = ["All", "Events", "Community", "Leadership", "Social"];
 
@@ -28,7 +15,7 @@ const galleryItems = [
   { id: 9, category: "Events", color: "from-maroon-light to-maroon", label: "Youth Debate" },
 ];
 
-function GalleryPage() {
+export default function Gallery() {
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -37,7 +24,6 @@ function GalleryPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
       <section className="py-24 gradient-hero relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute bottom-10 left-20 w-72 h-72 rounded-full bg-primary blur-3xl" />
@@ -53,10 +39,8 @@ function GalleryPage() {
         </div>
       </section>
 
-      {/* Gallery */}
       <section className="py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-12 justify-center">
             {categories.map((cat) => (
               <button
@@ -73,7 +57,6 @@ function GalleryPage() {
             ))}
           </div>
 
-          {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((item) => (
               <button
@@ -96,7 +79,6 @@ function GalleryPage() {
         </div>
       </section>
 
-      {/* Lightbox */}
       {selected !== null && selectedItem && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm p-4"

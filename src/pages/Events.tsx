@@ -1,25 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Calendar, MapPin, Clock, Users, Loader2, CheckCircle, AlertCircle, IndianRupee } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import type { Tables } from "@/integrations/supabase/types";
 
-export const Route = createFileRoute("/events")({
-  head: () => ({
-    meta: [
-      { title: "Events — Leo Club of Lalbagh Delights" },
-      { name: "description", content: "Discover upcoming and past events organized by Leo Club of Lalbagh Delights." },
-      { property: "og:title", content: "Events — Leo Club of Lalbagh Delights" },
-      { property: "og:description", content: "Discover upcoming events and activities." },
-    ],
-  }),
-  component: EventsPage,
-});
-
 type Event = Tables<"events">;
 
-function EventsPage() {
+export default function Events() {
   const { user, isAuthenticated } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,14 +23,12 @@ function EventsPage() {
         .from("events")
         .select("*")
         .order("event_date", { ascending: true });
-
       if (data) setEvents(data);
       setLoading(false);
     };
     fetchEvents();
   }, []);
 
-  // Fetch user's registrations
   useEffect(() => {
     if (!user) return;
     supabase
@@ -50,13 +36,10 @@ function EventsPage() {
       .select("event_id")
       .eq("user_id", user.id)
       .then(({ data }) => {
-        if (data) {
-          setRegisteredEventIds(new Set(data.map((r) => r.event_id)));
-        }
+        if (data) setRegisteredEventIds(new Set(data.map((r) => r.event_id)));
       });
   }, [user]);
 
-  // Fetch registration counts for all events
   useEffect(() => {
     if (events.length === 0) return;
     const fetchCounts = async () => {
@@ -77,12 +60,10 @@ function EventsPage() {
     if (!user) return;
     setRegisteringId(eventId);
     setToast(null);
-
     const { error } = await supabase.from("event_registrations").insert({
       event_id: eventId,
       user_id: user.id,
     });
-
     if (error) {
       setToast({ type: "error", message: error.message.includes("duplicate") ? "You are already registered for this event." : error.message });
     } else {
@@ -100,7 +81,6 @@ function EventsPage() {
 
   return (
     <div className="pt-20">
-      {/* Toast */}
       {toast && (
         <div className="fixed top-24 right-4 z-50 animate-fade-in-up">
           <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-lg border text-sm font-medium ${
@@ -114,7 +94,6 @@ function EventsPage() {
         </div>
       )}
 
-      {/* Hero */}
       <section className="py-24 gradient-hero relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-primary blur-3xl" />
@@ -130,13 +109,11 @@ function EventsPage() {
         </div>
       </section>
 
-      {/* Upcoming */}
       <section className="py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl font-bold text-foreground mb-12">
             Upcoming <span className="text-gradient-gold">Events</span>
           </h2>
-
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -165,7 +142,6 @@ function EventsPage() {
         </div>
       </section>
 
-      {/* Past Events */}
       {past.length > 0 && (
         <section className="py-24 bg-muted/50">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -199,19 +175,9 @@ function EventsPage() {
 }
 
 function EventCard({
-  event,
-  isRegistered,
-  isRegistering,
-  registrationCount,
-  isAuthenticated,
-  onRegister,
+  event, isRegistered, isRegistering, registrationCount, isAuthenticated, onRegister,
 }: {
-  event: Event;
-  isRegistered: boolean;
-  isRegistering: boolean;
-  registrationCount: number;
-  isAuthenticated: boolean;
-  onRegister: () => void;
+  event: Event; isRegistered: boolean; isRegistering: boolean; registrationCount: number; isAuthenticated: boolean; onRegister: () => void;
 }) {
   const spotsLeft = event.max_participants ? event.max_participants - registrationCount : null;
   const isFull = spotsLeft !== null && spotsLeft <= 0;
@@ -220,12 +186,7 @@ function EventCard({
     <div className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300">
       <div className="h-2 gradient-gold" />
       {event.image_url && (
-        <img
-          src={event.image_url}
-          alt={event.title}
-          className="w-full h-48 object-cover"
-          loading="lazy"
-        />
+        <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" loading="lazy" />
       )}
       <div className="p-8">
         <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary mb-4">
@@ -257,16 +218,12 @@ function EventCard({
             <span>{spotsLeft !== null ? `${spotsLeft} spots left` : `${registrationCount} registered`}</span>
           </div>
         </div>
-
-        {/* Fee */}
         {event.registration_fee && Number(event.registration_fee) > 0 && (
           <div className="mt-4 flex items-center gap-2 text-sm font-medium text-foreground">
             <IndianRupee className="h-4 w-4 text-primary" />
             <span>₹{Number(event.registration_fee).toLocaleString("en-IN")}</span>
           </div>
         )}
-
-        {/* Register Button */}
         <div className="mt-6">
           {isRegistered ? (
             <div className="w-full py-3 text-sm font-semibold rounded-xl text-center bg-green-500/10 text-green-700 dark:text-green-400 border border-green-500/20 flex items-center justify-center gap-2">
@@ -279,13 +236,7 @@ function EventCard({
               disabled={isRegistering || isFull}
               className="w-full py-3 text-sm font-semibold rounded-xl gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
-              {isRegistering ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : isFull ? (
-                "Event Full"
-              ) : (
-                "Register Now"
-              )}
+              {isRegistering ? <Loader2 className="h-4 w-4 animate-spin" /> : isFull ? "Event Full" : "Register Now"}
             </button>
           ) : (
             <Link

@@ -1,24 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Search, Users, Filter, Loader2, User, Mail, Phone, BadgeCheck } from "lucide-react";
+import { Search, Users, Filter, Loader2, Mail, Phone, BadgeCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
-export const Route = createFileRoute("/members")({
-  head: () => ({
-    meta: [
-      { title: "Member Directory — Leo Club of Lalbagh Delights" },
-      { name: "description", content: "Browse the member directory of Leo Club of Lalbagh Delights." },
-      { property: "og:title", content: "Member Directory — Leo Club of Lalbagh Delights" },
-      { property: "og:description", content: "Meet the members of our club." },
-    ],
-  }),
-  component: MembersPage,
-});
-
 type Profile = Tables<"profiles">;
 
-function MembersPage() {
+export default function Members() {
   const [members, setMembers] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -33,7 +20,6 @@ function MembersPage() {
         .select("*")
         .eq("is_active", true)
         .order("full_name", { ascending: true });
-
       if (data) {
         setMembers(data);
         const uniqueDesignations = [...new Set(data.map((m) => m.designation).filter(Boolean))] as string[];
@@ -56,7 +42,6 @@ function MembersPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
       <section className="py-24 gradient-hero relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-primary blur-3xl" />
@@ -72,7 +57,6 @@ function MembersPage() {
         </div>
       </section>
 
-      {/* Search & Filter */}
       <section className="py-12 bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -108,7 +92,6 @@ function MembersPage() {
         </div>
       </section>
 
-      {/* Members Grid */}
       <section className="py-16 bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loading ? (
@@ -137,15 +120,10 @@ function MembersPage() {
 function MemberCard({ member }: { member: Profile }) {
   return (
     <div className="group bg-card rounded-2xl border border-border p-6 hover:shadow-xl hover:border-primary/30 transition-all duration-300">
-      {/* Avatar */}
       <div className="flex items-center gap-4 mb-4">
         <div className="w-14 h-14 rounded-full gradient-gold flex items-center justify-center text-primary-foreground text-xl font-bold shrink-0 group-hover:scale-105 transition-transform">
           {member.avatar_url ? (
-            <img
-              src={member.avatar_url}
-              alt={member.full_name}
-              className="w-full h-full rounded-full object-cover"
-            />
+            <img src={member.avatar_url} alt={member.full_name} className="w-full h-full rounded-full object-cover" />
           ) : (
             member.full_name.charAt(0).toUpperCase()
           )}
@@ -154,13 +132,9 @@ function MemberCard({ member }: { member: Profile }) {
           <h3 className="font-heading text-base font-bold text-foreground truncate group-hover:text-primary transition-colors">
             {member.full_name || "Member"}
           </h3>
-          {member.designation && (
-            <p className="text-xs text-primary font-medium">{member.designation}</p>
-          )}
+          {member.designation && <p className="text-xs text-primary font-medium">{member.designation}</p>}
         </div>
       </div>
-
-      {/* Details */}
       <div className="space-y-2 text-sm">
         {member.international_id && (
           <div className="flex items-center gap-2 text-muted-foreground">
@@ -181,8 +155,6 @@ function MemberCard({ member }: { member: Profile }) {
           </div>
         )}
       </div>
-
-      {/* Status badge */}
       <div className="mt-4 pt-4 border-t border-border/50">
         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-green-500/10 text-green-700 dark:text-green-400">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500" />

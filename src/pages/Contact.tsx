@@ -1,20 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 
-export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Leo Club of Lalbagh Delights" },
-      { name: "description", content: "Get in touch with Leo Club of Lalbagh Delights. We'd love to hear from you." },
-      { property: "og:title", content: "Contact — Leo Club of Lalbagh Delights" },
-      { property: "og:description", content: "Get in touch with us." },
-    ],
-  }),
-  component: ContactPage,
-});
-
-function ContactPage() {
+export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -25,7 +12,6 @@ function ContactPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
       <section className="py-24 gradient-hero relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-primary blur-3xl" />
@@ -44,7 +30,6 @@ function ContactPage() {
       <section className="py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-            {/* Contact Info */}
             <div className="lg:col-span-2 space-y-8">
               <div>
                 <h2 className="font-heading text-2xl font-bold text-foreground mb-6">
@@ -55,7 +40,6 @@ function ContactPage() {
                   don't hesitate to reach out.
                 </p>
               </div>
-
               <div className="space-y-5">
                 {[
                   { icon: MapPin, label: "Address", value: "Lalbagh, Bangalore, Karnataka, India" },
@@ -75,7 +59,6 @@ function ContactPage() {
               </div>
             </div>
 
-            {/* Form */}
             <div className="lg:col-span-3">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center h-full text-center p-12 rounded-2xl bg-card border border-border">
@@ -94,51 +77,25 @@ function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="p-8 sm:p-10 rounded-2xl bg-card border border-border space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
-                      Your Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">Your Name</label>
+                    <input id="name" type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                      placeholder="John Doe"
-                    />
+                      placeholder="John Doe" />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">Email Address</label>
+                    <input id="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                      placeholder="john@example.com"
-                    />
+                      placeholder="john@example.com" />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    <label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">Message</label>
+                    <textarea id="message" required rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors resize-none"
-                      placeholder="Tell us how we can help..."
-                    />
+                      placeholder="Tell us how we can help..." />
                   </div>
-                  <button
-                    type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 text-sm font-semibold rounded-xl gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-[1.02]"
-                  >
+                  <button type="submit"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 text-sm font-semibold rounded-xl gradient-gold text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-[1.02]">
                     <Send className="h-4 w-4" />
                     Send Message
                   </button>
