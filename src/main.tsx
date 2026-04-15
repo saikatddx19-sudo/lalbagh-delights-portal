@@ -9,8 +9,10 @@ import "../index.css";
 import Lenis from "lenis";
 
 const lenis = new Lenis({
-  duration: 1.2,
-  smoothWheel: true
+  duration: 0.7,
+  smoothWheel: true,
+   smoothTouch: false,
+  wheelMultiplier: 1.2
 });
 
 function raf(time: number) {
