@@ -10,8 +10,9 @@ import Lenis from "lenis";
 
 const lenis = new Lenis({
   duration: 0.7,
+  smooth: true,
   smoothWheel: true,
-   smoothTouch: false,
+   smoothTouch: true,
   wheelMultiplier: 1.2
 });
 
