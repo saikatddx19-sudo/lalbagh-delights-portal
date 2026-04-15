@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/use-auth";
-import Header from "@/components/Header";
+import Header from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Index from "@/pages/Index";
 import About from "@/pages/About";
