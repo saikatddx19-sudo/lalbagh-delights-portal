@@ -96,9 +96,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <img src="/images/logo.jpeg" className="h-9 w-9 rounded-full" />
-            <span className="font-semibold text-sm text-neutral-800 dark:text-white">
-              Lalbagh Delights
-            </span>
+            <span
+  className={`font-semibold text-sm tracking-wide transition-colors duration-300
+  dark:text-white text-black`}
+>
+  Lalbagh Delights
+</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -110,13 +113,13 @@ export default function Navbar() {
                 className={`relative text-sm font-medium transition group ${
                   isActive(link.to)
                     ? "text-primary"
-                    : "text-neutral-700 dark:text-neutral-300 hover:text-primary"
+                    : "text-yellow-400 dark:text-yellow-300 font-semibold hover:text-primary dark:hover:text-primary"
                 }`}
               >
                 {link.label}
 
                 <span
-                  className={`absolute left-0 -bottom-1 h-[2px] bg-primary transition-all duration-300 ${
+                  className={`absolute left-0 -bottom-1 h-[2px] bg-yellow-400 dark:bg-yellow-300 transition-all duration-300 ${
                     isActive(link.to)
                       ? "w-full"
                       : "w-0 group-hover:w-full"
@@ -172,40 +175,56 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-neutral-800 dark:text-white"
+              className="md:hidden text-neutral-800 dark:text-black z-50"
             >
-              {isOpen ? <X /> : <Menu />}
+              {isOpen ? <X size={24}/> : <Menu size={24}/>}
             </button>
           </div>
         </div>
       </header>
 
       {/* MOBILE MENU */}
-      <div
-        className={`md:hidden fixed top-20 left-1/2 -translate-x-1/2 w-[90%] 
-        bg-white dark:bg-neutral-900 border rounded-2xl p-6 shadow-xl
-        transition-all duration-300 ${
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+<div
+  className={`md:hidden fixed top-16 left-0 right-0 z-40 
+  bg-white dark:bg-neutral-900 
+  border-t border-neutral-200 dark:border-neutral-800
+  transition-all duration-300 ease-in-out
+  ${
+    isOpen
+      ? "opacity-100 translate-y-0"
+      : "opacity-0 -translate-y-3 pointer-events-none"
+  }`}
+>
+  <div className="px-6 py-6 space-y-5">
+
+    {navLinks.map((link) => (
+      <Link
+        key={link.to}
+        to={link.to}
+        onClick={() => setIsOpen(false)}
+        className={`block text-base font-medium transition
+        ${
+          isActive(link.to)
+            ? "text-yellow-500"
+            : "text-neutral-800 dark:text-neutral-300 hover:text-yellow-500"
         }`}
       >
-        {navLinks.map((link) => (
-          <Link
-            key={link.to}
-            to={link.to}
-            onClick={() => setIsOpen(false)}
-            className="block py-2 text-neutral-700 dark:text-neutral-300"
-          >
-            {link.label}
-          </Link>
-        ))}
+        {link.label}
+      </Link>
+    ))}
 
-        <Link
-          to="/login"
-          className="block mt-4 text-center py-2 bg-primary text-white rounded-full"
-        >
-          Login
-        </Link>
-      </div>
+    {/* CTA */}
+    <Link
+      to="/login"
+      className="block text-center py-2 rounded-full 
+      bg-yellow-500 text-black font-semibold 
+      hover:bg-yellow-400 transition"
+    >
+      Login
+    </Link>
+
+  </div>
+</div>
     </>
   );
 }
