@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
+import { id } from "date-fns/locale";
 
 const categories = ["All", "Events", "Community", "Leadership", "Social"];
 
@@ -24,6 +25,16 @@ const galleryItems = [
   { id: 18, category: "Community", color: "from-gold to-maroon", label: "Senior Citizen Visit" },
   { id: 19, category: "Leadership", color: "from-maroon to-maroon-light", label: "Team Building Retreat" },
   { id: 20, category: "Social", color: "from-gold-light to-gold-dark", label: "Movie Night" },
+  { id: 21, category: "Events", color: "from-maroon-light to-gold-dark", label: "Environmental Workshop" },
+  { id: 22, category: "Community", color: "from-gold to-maroon-light", label: "Animal Shelter Visit" },
+  { id: 23, category: "Leadership", color: "from-maroon to-gold", label: "Conflict Resolution Seminar" },
+  { id: 24, category: "Social", color: "from-gold-dark to-gold-light", label: "Karaoke Night" },
+  { id: 25, category: "Events", color: "from-maroon-light to-maroon", label: "Youth Leadership Conference" },
+  { id: 26, category: "Community", color: "from-gold to-maroon", label: "Community Garden Project" },
+  { id: 27, category: "Leadership", color: "from-maroon to-maroon-light", label: "Leadership Panel Discussion" },
+  { id: 28, category: "Social", color: "from-gold-light to-gold-dark", label: "Trivia Night" },
+  { id: 29, category: "Events", color: "from-maroon-light to-gold-dark", label: "Youth Volunteer Fair" },
+  { id: 30, category: "Community", color: "from-gold to-maroon-light", label: "Neighborhood Block Party" },
 ];
 
 export default function Gallery() {
