@@ -13,6 +13,17 @@ const galleryItems = [
   { id: 7, category: "Leadership", color: "from-maroon to-gold", label: "Workshop Series" },
   { id: 8, category: "Social", color: "from-gold-dark to-gold-light", label: "Members Gathering" },
   { id: 9, category: "Events", color: "from-maroon-light to-maroon", label: "Youth Debate" },
+  { id: 10, category: "Community", color: "from-gold to-maroon", label: "Health Awareness Camp" },
+  { id: 11, category: "Leadership", color: "from-maroon to-maroon-light", label: "Mentorship Program" },
+  { id: 12, category: "Social", color: "from-gold-light to-gold-dark", label: "Picnic Day" },
+  { id: 13, category: "Events", color: "from-maroon-light to-gold-dark", label: "Charity Run" },
+  { id: 14, category: "Community", color: "from-gold to-maroon-light", label: "Clothing Drive" },
+  { id: 15, category: "Leadership", color: "from-maroon to-gold", label: "Public Speaking Workshop" },
+  { id: 16, category: "Social", color: "from-gold-dark to-gold-light", label: "Game Night" },
+  { id: 17, category: "Events", color: "from-maroon-light to-maroon", label: "Cultural Festival" },
+  { id: 18, category: "Community", color: "from-gold to-maroon", label: "Senior Citizen Visit" },
+  { id: 19, category: "Leadership", color: "from-maroon to-maroon-light", label: "Team Building Retreat" },
+  { id: 20, category: "Social", color: "from-gold-light to-gold-dark", label: "Movie Night" },
 ];
 
 export default function Gallery() {
