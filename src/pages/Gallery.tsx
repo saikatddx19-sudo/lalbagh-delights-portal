@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { categories, galleryItems, type GalleryItem } from "../components/gallery/galleryData";
-import CoverflowCarousel from "../components/gallery/CoverflowCarousel";
-import AnimatedMasonryGrid from "../components/gallery/AnimatedMasonryGrid";
-import GalleryModal from "../components/gallery/GalleryModal";
+import { categories, galleryItems, type GalleryItem } from "../components/Gallery/galleryData";
+import CoverflowCarousel from "../components/Gallery/CoverflowCarousel";
+import AnimatedMasonryGrid from "../components/Gallery/AnimatedMasonryGrid";
+import GalleryModal from "../components/Gallery/GalleryModal";
 
 export default function Gallery() {
   const [filter, setFilter] = useState("All");
