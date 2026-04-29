@@ -1,48 +1,17 @@
 import { useState } from "react";
-import { X } from "lucide-react";
-import { id } from "date-fns/locale";
-
-const categories = ["All", "Events", "Community", "Leadership", "Social"];
-
-const galleryItems = [
-  { id: 1, category: "Events", color: "from-gold to-gold-dark", label: "Community Clean-Up 2025" },
-  { id: 2, category: "Leadership", color: "from-maroon to-maroon-light", label: "Leadership Summit" },
-  { id: 3, category: "Community", color: "from-gold-dark to-maroon", label: "Tree Plantation Drive" },
-  { id: 4, category: "Social", color: "from-gold-light to-gold", label: "Annual Gala Night" },
-  { id: 5, category: "Events", color: "from-maroon-light to-gold-dark", label: "Blood Donation Camp" },
-  { id: 6, category: "Community", color: "from-gold to-maroon-light", label: "Food Distribution" },
-  { id: 7, category: "Leadership", color: "from-maroon to-gold", label: "Workshop Series" },
-  { id: 8, category: "Social", color: "from-gold-dark to-gold-light", label: "Members Gathering" },
-  { id: 9, category: "Events", color: "from-maroon-light to-maroon", label: "Youth Debate" },
-  { id: 10, category: "Community", color: "from-gold to-maroon", label: "Health Awareness Camp" },
-  { id: 11, category: "Leadership", color: "from-maroon to-maroon-light", label: "Mentorship Program" },
-  { id: 12, category: "Social", color: "from-gold-light to-gold-dark", label: "Picnic Day" },
-  { id: 13, category: "Events", color: "from-maroon-light to-gold-dark", label: "Charity Run" },
-  { id: 14, category: "Community", color: "from-gold to-maroon-light", label: "Clothing Drive" },
-  { id: 15, category: "Leadership", color: "from-maroon to-gold", label: "Public Speaking Workshop" },
-  { id: 16, category: "Social", color: "from-gold-dark to-gold-light", label: "Game Night" },
-  { id: 17, category: "Events", color: "from-maroon-light to-maroon", label: "Cultural Festival" },
-  { id: 18, category: "Community", color: "from-gold to-maroon", label: "Senior Citizen Visit" },
-  { id: 19, category: "Leadership", color: "from-maroon to-maroon-light", label: "Team Building Retreat" },
-  { id: 20, category: "Social", color: "from-gold-light to-gold-dark", label: "Movie Night" },
-  { id: 21, category: "Events", color: "from-maroon-light to-gold-dark", label: "Environmental Workshop" },
-  { id: 22, category: "Community", color: "from-gold to-maroon-light", label: "Animal Shelter Visit" },
-  { id: 23, category: "Leadership", color: "from-maroon to-gold", label: "Conflict Resolution Seminar" },
-  { id: 24, category: "Social", color: "from-gold-dark to-gold-light", label: "Karaoke Night" },
-  { id: 25, category: "Events", color: "from-maroon-light to-maroon", label: "Youth Leadership Conference" },
-  { id: 26, category: "Community", color: "from-gold to-maroon", label: "Community Garden Project" },
-  { id: 27, category: "Leadership", color: "from-maroon to-maroon-light", label: "Leadership Panel Discussion" },
-  { id: 28, category: "Social", color: "from-gold-light to-gold-dark", label: "Trivia Night" },
-  { id: 29, category: "Events", color: "from-maroon-light to-gold-dark", label: "Youth Volunteer Fair" },
-  { id: 30, category: "Community", color: "from-gold to-maroon-light", label: "Neighborhood Block Party" },
-];
+import { categories, galleryItems, type GalleryItem } from "../components/gallery/galleryData";
+import CoverflowCarousel from "../components/gallery/CoverflowCarousel";
+import AnimatedMasonryGrid from "../components/gallery/AnimatedMasonryGrid";
+import GalleryModal from "../components/gallery/GalleryModal";
 
 export default function Gallery() {
   const [filter, setFilter] = useState("All");
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
 
-  const filtered = filter === "All" ? galleryItems : galleryItems.filter((i) => i.category === filter);
-  const selectedItem = galleryItems.find((i) => i.id === selected);
+  const filtered =
+    filter === "All"
+      ? galleryItems
+      : galleryItems.filter((item) => item.category === filter);
 
   return (
     <div className="pt-20">
@@ -50,16 +19,23 @@ export default function Gallery() {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute bottom-10 left-20 w-72 h-72 rounded-full bg-primary blur-3xl" />
         </div>
+
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <p className="text-primary font-semibold text-sm tracking-widest uppercase mb-4">Our Memories</p>
+          <p className="text-primary font-semibold text-sm tracking-widest uppercase mb-4">
+            Our Memories
+          </p>
+
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-secondary-foreground mb-6">
             Photo <span className="text-gradient-gold">Gallery</span>
           </h1>
+
           <p className="text-lg text-secondary-foreground/70 max-w-2xl mx-auto">
             A glimpse into the moments that define us — service, leadership, and celebration.
           </p>
         </div>
       </section>
+
+      <CoverflowCarousel items={galleryItems.slice(0, 7)} onSelect={setSelectedItem} />
 
       <section className="py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -79,52 +55,11 @@ export default function Gallery() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setSelected(item.id)}
-                className={`group relative aspect-[4/3] rounded-2xl bg-gradient-to-br ${item.color} overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300`}
-              >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-heading text-xl font-bold text-secondary-foreground/80 text-center px-4">
-                    {item.label}
-                  </span>
-                </div>
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-foreground/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-sm font-semibold text-secondary-foreground">{item.category}</span>
-                </div>
-              </button>
-            ))}
-          </div>
+          <AnimatedMasonryGrid items={filtered} onSelect={setSelectedItem} />
         </div>
       </section>
 
-      {selected !== null && selectedItem && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm p-4"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className={`relative w-full max-w-3xl aspect-video rounded-2xl bg-gradient-to-br ${selectedItem.color} shadow-2xl`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <span className="font-heading text-3xl font-bold text-secondary-foreground">{selectedItem.label}</span>
-                <p className="text-sm text-secondary-foreground/70 mt-2">{selectedItem.category}</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-foreground/20 text-secondary-foreground hover:bg-foreground/40 transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      )}
+      <GalleryModal item={selectedItem} onClose={() => setSelectedItem(null)} />
     </div>
   );
 }
