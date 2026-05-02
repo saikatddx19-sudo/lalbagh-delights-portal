@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import type { GalleryItem } from "./galleryData";
+import GalleryModal from "../components/gallery/GalleryModal";
 
 type Props = {
   item: GalleryItem | null;
@@ -31,16 +32,7 @@ export default function GalleryModal({ item, onClose }: Props) {
               className="h-[70vh] w-full object-cover"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent" />
-
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <span className="inline-flex rounded-full gradient-gold px-3 py-1 text-xs font-semibold text-primary-foreground mb-3">
-                {item.category}
-              </span>
-              <h3 className="font-heading text-3xl font-bold text-secondary-foreground">
-                {item.title}
-              </h3>
-            </div>
+            <GalleryModal item={selectedItem} onClose={() => setSelectedItem(null)} />
 
             <button
               onClick={onClose}

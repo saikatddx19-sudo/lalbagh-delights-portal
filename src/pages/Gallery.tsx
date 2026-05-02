@@ -1,53 +1,8 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-
-type GalleryItem = {
-  id: number;
-  title: string;
-  category: "Events" | "Community" | "Leadership" | "Social";
-  image: string;
-};
-
-const categories = ["All", "Events", "Community", "Leadership", "Social"];
-
-const galleryItems: GalleryItem[] = [
-  {
-    id: 1,
-    title: "Community Clean-Up 2025",
-    category: "Events",
-    image: "https://placehold.co/900x650/7a2e2e/f5d06f?text=Community+Clean-Up",
-  },
-  {
-    id: 2,
-    title: "Leadership Summit",
-    category: "Leadership",
-    image: "https://placehold.co/900x700/5a1f1f/f5d06f?text=Leadership+Summit",
-  },
-  {
-    id: 3,
-    title: "Tree Plantation Drive",
-    category: "Community",
-    image: "https://placehold.co/900x800/8a6b1f/ffffff?text=Tree+Plantation",
-  },
-  {
-    id: 4,
-    title: "Annual Gala Night",
-    category: "Social",
-    image: "https://placehold.co/900x600/7a2e2e/ffffff?text=Annual+Gala",
-  },
-  {
-    id: 5,
-    title: "Blood Donation Camp",
-    category: "Events",
-    image: "https://placehold.co/900x750/5a1f1f/f5d06f?text=Blood+Donation",
-  },
-  {
-    id: 6,
-    title: "Food Distribution",
-    category: "Community",
-    image: "https://placehold.co/900x680/8a6b1f/ffffff?text=Food+Distribution",
-  },
-];
+import { categories, galleryItems, type GalleryItem } from "../components/gallery/galleryData";
+import AnimatedMasonryGrid from "../components/gallery/AnimatedMasonryGrid";
+import CoverflowCarousel from "../components/gallery/CoverflowCarousel"; 
 
 export default function Gallery() {
   const [filter, setFilter] = useState("All");
@@ -80,6 +35,8 @@ export default function Gallery() {
         </div>
       </section>
 
+      <CoverflowCarousel items={galleryItems} onSelect={setSelectedItem} />
+
       <section className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-2 mb-12 justify-center">
@@ -98,36 +55,7 @@ export default function Gallery() {
             ))}
           </div>
 
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {filteredItems.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => setSelectedItem(item)}
-                className="group relative mb-6 block w-full overflow-hidden rounded-3xl bg-card shadow-md hover:shadow-2xl border border-border transition-all duration-300"
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                    index % 3 === 0 ? "h-72" : index % 3 === 1 ? "h-64" : "h-80"
-                  }`}
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/10 to-transparent" />
-
-                <div className="absolute bottom-0 left-0 right-0 p-5 text-left">
-                  <span className="inline-flex rounded-full gradient-gold px-3 py-1 text-xs font-semibold text-primary-foreground mb-2">
-                    {item.category}
-                  </span>
-
-                  <h3 className="font-heading text-xl font-bold text-secondary-foreground">
-                    {item.title}
-                  </h3>
-                </div>
-              </button>
-            ))}
-          </div>
+          <AnimatedMasonryGrid items={filteredItems} onSelect={setSelectedItem} />
         </div>
       </section>
 
