@@ -5,13 +5,13 @@ type Props = {
   onSelect: (item: GalleryItem) => void;
 };
 
-const safeItems = items.slice(0, 8);
+export default function CoverflowCarousel({ items, onSelect }: Props) {
+  const safeItems = items.slice(0, 8);
 
-if (safeItems.length === 0) {
-  return null;
-}
+  if (safeItems.length === 0) return null;
 
-const angleStep = 360 / safeItems.length;
+  const angleStep = 360 / safeItems.length;
+  const radius = 300;
 
   return (
     <section className="py-20 bg-background overflow-hidden">
@@ -29,7 +29,7 @@ const angleStep = 360 / safeItems.length;
           style={{ perspective: "1200px" }}
         >
           <div
-            className="relative h-[260px] w-[260px]"
+            className="relative h-[300px] w-[260px] flex items-center justify-center"
             style={{
               transformStyle: "preserve-3d",
               animation: "galleryOrbit 12s linear infinite",
@@ -41,12 +41,10 @@ const angleStep = 360 / safeItems.length;
               return (
                 <button
                   key={item.id}
-                  type="button"
                   onClick={() => onSelect(item)}
                   className="absolute left-1/2 top-1/2 h-[210px] w-[180px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
                   style={{
                     transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                    backfaceVisibility: "hidden",
                   }}
                 >
                   <img
@@ -55,18 +53,6 @@ const angleStep = 360 / safeItems.length;
                     loading="lazy"
                     className="h-full w-full object-cover"
                   />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-transparent to-transparent" />
-
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
-                    <span className="inline-flex rounded-full gradient-gold px-3 py-1 text-xs font-semibold text-primary-foreground mb-2">
-                      {item.category}
-                    </span>
-
-                    <h3 className="font-heading text-base font-bold text-secondary-foreground">
-                      {item.title}
-                    </h3>
-                  </div>
                 </button>
               );
             })}
