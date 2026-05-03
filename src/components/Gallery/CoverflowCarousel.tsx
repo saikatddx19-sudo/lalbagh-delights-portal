@@ -25,11 +25,11 @@ export default function CoverflowCarousel({ items, onSelect }: Props) {
         </h2>
 
         <div
-          className="relative mx-auto h-[420px] w-full max-w-4xl flex items-center justify-center"
+          className="relative mx-auto h-105 w-full max-w-4xl flex items-center justify-center"
           style={{ perspective: "1200px" }}
         >
           <div
-            className="relative h-[150px] w-37.5 flex items-center justify-center"
+            className="relative h-37.5 w-37.5 flex items-center justify-center"
             style={{
               transformStyle: "preserve-3d",
               animation: "galleryOrbit 12s linear infinite",
@@ -42,7 +42,7 @@ export default function CoverflowCarousel({ items, onSelect }: Props) {
                 <button
                   key={item.id}
                   onClick={() => onSelect(item)}
-                  className="absolute left-1/2 top-1/2 h-[210px] w-[180px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
+                  className="absolute left-1/2 top-1/2 h-52.5 w-45 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
                   style={{
                     transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
                   }}
