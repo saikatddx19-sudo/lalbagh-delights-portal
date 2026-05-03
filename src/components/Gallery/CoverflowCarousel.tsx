@@ -29,7 +29,7 @@ export default function CoverflowCarousel({ items, onSelect }: Props) {
           style={{ perspective: "1200px" }}
         >
           <div
-            className="relative h-[150px] w-[150px] flex items-center justify-center"
+            className="relative h-[150px] w-37.5 flex items-center justify-center"
             style={{
               transformStyle: "preserve-3d",
               animation: "galleryOrbit 12s linear infinite",
