@@ -5,10 +5,13 @@ type Props = {
   onSelect: (item: GalleryItem) => void;
 };
 
-export default function CoverflowCarousel({ items, onSelect }: Props) {
-  const safeItems = items.slice(0, 8);
-  const angleStep = 360 / safeItems.length;
-  const radius = 230;
+const safeItems = items.slice(0, 8);
+
+if (safeItems.length === 0) {
+  return null;
+}
+
+const angleStep = 360 / safeItems.length;
 
   return (
     <section className="py-20 bg-background overflow-hidden">
